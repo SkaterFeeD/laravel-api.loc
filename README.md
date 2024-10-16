@@ -11,7 +11,7 @@ composer install
 ```
 3. Скопируйте файл .env.example в .env
 ```shell
-cd .env.example .env
+copy .env.example .env
 ```
 4. Сгенерируйте ключ шифрования
 ```shell
