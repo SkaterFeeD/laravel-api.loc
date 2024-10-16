@@ -8,6 +8,7 @@ use App\Http\Resources\Api\UserResource;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -35,6 +36,19 @@ class AuthController extends Controller
     }
 
     // Авторизация
+    public function login(Request $request)
+    {
+        if (Auth::attempt($request->only('login', 'password'))) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        // Создание токена для пользователя
+        $token = Auth::user()->createToken('token')->plainTextToken;
+        return response()->json([$token]);
 
+    }
     // Выход
+    public function logout(Request $request) {
+        $request->user()->currentAccessToken()->delete();
+        response()->json(['message' => 'Logged out']);
+    }
 }
